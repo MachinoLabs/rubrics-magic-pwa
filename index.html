@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rubrics Magic V3</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <!-- PWA hooks -->
+  <meta name="theme-color" content="#0e9e9e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <!-- /PWA hooks -->
+  <style>
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4eee4;color:#123;transition:background .2s,color .2s;}body.theme-dark{background:#121212;color:#f5f5f5;}*{box-sizing:border-box;}h1,h2,h3,h4{margin:0;}button,input,select,textarea{font-family:inherit;font-size:1rem;}button{cursor:pointer;border:none;border-radius:999px;padding:0.5rem 1rem;box-shadow:0 1px 3px rgba(0,0,0,.15);background:#0e9e9e;color:#fff;transition:background .2s,transform .1s,box-shadow .2s;}button:hover{background:#0a7b7b;transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.25);}button:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:#fdf7ec;box-shadow:0 2px 6px rgba(0,0,0,.08);position:sticky;top:0;z-index:10;}body.theme-dark header{background:#1e1e1e;box-shadow:0 2px 6px rgba(0,0,0,.8);}header .titles{display:flex;flex-direction:column;gap:.15rem;}header .title-main{font-size:1.4rem;font-weight:700;}header .title-sub{font-size:.9rem;opacity:.8;}header .header-right{display:flex;align-items:center;gap:.5rem;}header .theme-toggle{display:flex;align-items:center;gap:.35rem;background:#e0f3f3;color:#045;padding:.35rem .8rem;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,.15);}body.theme-dark header .theme-toggle{background:#111;color:#e0ffff;}header .theme-toggle span{font-size:.85rem;}main{padding:1rem 1.25rem 4rem;max-width:1100px;margin:0 auto;}@media(max-width:768px){header{flex-direction:column;align-items:flex-start;gap:.5rem;}main{padding:.75rem .75rem 3.5rem;}}.card{background:#fff;border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);}body.theme-dark .card{background:#1c1c1c;box-shadow:0 2px 10px rgba(0,0,0,.8);} .tab-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}.tab-btn{flex:1 1 120px;text-align:center;background:#e2dad0;color:#123;border-radius:999px;padding:.5rem .75rem;font-size:.95rem;font-weight:500;box-shadow:none;}body.theme-dark .tab-btn{background:#222;color:#f5f5f5;} .tab-btn.active{background:#0e9e9e;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);} .tab-panel{display:none;} .tab-panel.active{display:block;} .teacher-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.8rem;padding:.6rem .75rem;border-radius:.9rem;background:#f8f1e6;}body.theme-dark .teacher-strip{background:#252015;} .teacher-strip-main{font-size:.95rem;font-weight:500;} .chip{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .55rem;border-radius:999px;background:#0e9e9e1a;color:#045;font-size:.8rem;}body.theme-dark .chip{background:#0e9e9e33;color:#c5ffff;} .chip-label{opacity:.7;font-size:.75rem;} .chip-value{font-weight:600;} .section-title{font-size:1.05rem;font-weight:600;margin-bottom:.4rem;} .section-sub{font-size:.85rem;opacity:.7;margin-bottom:.5rem;} .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6rem .8rem;} .form-field{display:flex;flex-direction:column;gap:.2rem;font-size:.85rem;} .form-field label{opacity:.8;} .form-field input,.form-field select,.form-field textarea{border-radius:.6rem;border:1px solid rgba(0,0,0,.1);padding:.4rem .5rem;background:#fff;}body.theme-dark .form-field input,body.theme-dark .form-field select,body.theme-dark .form-field textarea{background:#111;border-color:#444;color:#f5f5f5;} .form-actions{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.4rem;} .inline-toggle{display:inline-flex;border-radius:999px;background:#f0e6d8;padding:.18rem;}body.theme-dark .inline-toggle{background:#222;} .inline-toggle button{flex:1 1 auto;border-radius:999px;background:transparent;box-shadow:none;padding:.3rem .7rem;font-size:.85rem;color:inherit;} .inline-toggle button.active{background:#0e9e9e;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);} .two-col{display:grid;grid-template-columns:2fr 1.4fr;gap:1rem;}@media(max-width:900px){.two-col{grid-template-columns:1fr;}} .pill-group{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0;} .pill{padding:.25rem .65rem;border-radius:999px;font-size:.8rem;background:#e2dad0;}body.theme-dark .pill{background:#333;} .list-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.4rem;} .list-table th,.list-table td{border-bottom:1px solid rgba(0,0,0,.07);padding:.35rem .25rem;text-align:left;}body.theme-dark .list-table th,body.theme-dark .list-table td{border-color:#333;} .list-table th{font-weight:600;font-size:.8rem;opacity:.8;} .small-btn{padding:.25rem .6rem;font-size:.75rem;border-radius:.8rem;} .danger{background:#c0392b;} .danger:hover{background:#992d22;} .neutral{background:#b2b2b2;color:#111;} .neutral:hover{background:#909090;} .outline{background:transparent;color:#0e9e9e;border-radius:999px;border:1px solid #0e9e9e;box-shadow:none;}body.theme-dark .outline{color:#7deaea;border-color:#7deaea;} .outline:hover{background:#0e9e9e22;} .tag{display:inline-block;padding:.1rem .4rem;border-radius:.4rem;font-size:.7rem;background:#e2dad0;}body.theme-dark .tag{background:#333;} .grade-student-card{border-radius:.9rem;border:1px solid rgba(0,0,0,.08);padding:.6rem .7rem;margin-bottom:.5rem;}body.theme-dark .grade-student-card{border-color:#333;} .grade-header{display:flex;align-items:center;justify-content:space-between;gap:.4rem;margin-bottom:.35rem;font-size:.9rem;font-weight:600;} .trait-row{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .35rem;margin-bottom:.3rem;font-size:.8rem;} .trait-label{min-width:110px;font-weight:500;} .level-btn{padding:.2rem .55rem;border-radius:999px;font-size:.75rem;background:#e2dad0;color:#123;box-shadow:none;}body.theme-dark .level-btn{background:#333;color:#eee;} .level-btn.selected{background:#0e9e9e;color:#fff;} .comment-box{width:100%;border-radius:.6rem;border:1px solid rgba(0,0,0,.1);padding:.4rem .45rem;font-size:.8rem;min-height:2.3rem;resize:vertical;}body.theme-dark .comment-box{background:#111;border-color:#333;color:#f5f5f5;} .footer{position:fixed;bottom:0;left:0;right:0;padding:.5rem .75rem;font-size:.8rem;text-align:center;background:#f8f1e6;border-top:1px solid rgba(0,0,0,.05);}body.theme-dark .footer{background:#181818;border-top-color:#333;} .export-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.6rem;} .export-options button{width:100%;justify-content:center;} .howto-section{margin-bottom:1rem;} .howto-section h3{font-size:1rem;margin-bottom:.25rem;} .howto-section p,.howto-section ul{font-size:.85rem;opacity:.9;margin:.15rem 0;} .howto-section ul{padding-left:1.2rem;} .howto-section li{margin:.15rem 0;} .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="titles">
+      <div class="title-main">Rubrics Magic</div>
+      <div class="title-sub">Offline rubric builder &amp; grader for teachers</div>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle">
+        <span id="theme-label">Light</span>
+        <button id="theme-btn" class="small-btn neutral" type="button">Toggle theme</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="create">Create</button>
+        <button class="tab-btn" data-tab="students-classes">Students &amp; Classes</button>
+        <button class="tab-btn" data-tab="grade">Grade</button>
+        <button class="tab-btn" data-tab="export">Export</button>
+        <button class="tab-btn" data-tab="how-to">How to Use</button>
+      </div>
+    </div>
+
+    <!-- Create Tab -->
+    <section class="card tab-panel active" id="tab-create">
+      <div class="teacher-strip">
+        <div class="teacher-strip-main">
+          Teacher: <span id="teacher-name-display">Not set</span>
+        </div>
+        <div class="pill-group">
+          <span class="chip"><span class="chip-label">School</span><span class="chip-value" id="teacher-school-chip">Not set</span></span>
+          <span class="chip"><span class="chip-label">Grade(s)</span><span class="chip-value" id="teacher-grades-chip">Not set</span></span>
+          <span class="chip"><span class="chip-label">Subject(s)</span><span class="chip-value" id="teacher-subjects-chip">Not set</span></span>
+          <span class="chip"><span class="chip-label">Room</span><span class="chip-value" id="teacher-room-chip">Not set</span></span>
+        </div>
+        <button id="edit-teacher-btn" class="small-btn outline" type="button">Edit Profile</button>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-title">Rubric Builder</div>
+          <div class="section-sub">Use Guided or Manual to shape your rubric. Preview updates in real-time.</div>
+
+          <div class="inline-toggle" style="margin-bottom:.6rem;">
+            <button type="button" class="builder-mode-btn active" data-mode="guided">Guided</button>
+            <button type="button" class="builder-mode-btn" data-mode="manual">Manual</button>
+          </div>
+
+          <!-- Guided Builder -->
+          <div id="guided-builder">
+            <div class="section-sub" style="margin-bottom:.4rem;font-weight:500;">Fast setup</div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="guided-name">What is this rubric for?</label>
+                <input id="guided-name" type="text" placeholder="Lab Report Rubric">
+              </div>
+              <div class="form-field">
+                <label for="guided-levels">How many performance levels?</label>
+                <select id="guided-levels">
+                  <option value="3">3 levels</option>
+                  <option value="4" selected>4 levels</option>
+                  <option value="5">5 levels</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="guided-traits">Key traits (comma separated)</label>
+                <input id="guided-traits" type="text" placeholder="Organization, Evidence, Clarity">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button id="guided-generate" type="button">Generate rubric structure</button>
+            </div>
+          </div>
+
+          <!-- Manual Builder -->
+          <div id="manual-builder" style="display:none;margin-top:.6rem;">
+            <div class="section-sub" style="margin-bottom:.4rem;font-weight:500;">Full control</div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="manual-name">Rubric name</label>
+                <input id="manual-name" type="text" placeholder="e.g., Lab Report Rubric">
+              </div>
+              <div class="form-field">
+                <label for="manual-type">Rubric type</label>
+                <select id="manual-type">
+                  <option value="analytic">Analytic</option>
+                  <option value="holistic">Holistic</option>
+                  <option value="single-point">Single-point</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:.6rem;">
+              <div class="section-sub" style="margin-bottom:.35rem;font-weight:500;">Traits</div>
+              <table class="list-table" id="traits-table">
+                <thead>
+                  <tr><th>Trait label</th><th style="width:90px;">Weight</th><th style="width:90px;">Actions</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="form-actions">
+                <button id="add-trait-btn" type="button" class="small-btn">Add trait</button>
+              </div>
+            </div>
+
+            <div style="margin-top:.8rem;">
+              <div class="section-sub" style="margin-bottom:.35rem;font-weight:500;">Performance Levels</div>
+              <table class="list-table" id="levels-table">
+                <thead>
+                  <tr><th>Label</th><th style="width:90px;">Points</th><th style="width:90px;">Actions</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="form-actions">
+                <button id="add-level-btn" type="button" class="small-btn">Add level</button>
+              </div>
+            </div>
+
+            <div style="margin-top:.8rem;">
+              <div class="section-sub" style="margin-bottom:.35rem;font-weight:500;">Descriptors</div>
+              <div id="descriptors-container" class="section-sub" style="opacity:.9;">Add traits and levels to edit descriptors.</div>
+            </div>
+          </div>
+
+          <div class="form-actions" style="margin-top:1rem;">
+            <button id="save-rubric-btn" type="button">Save rubric</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div>
+          <div class="section-title">Rubric Preview</div>
+          <div class="section-sub">Read-only summary of the rubric you are building.</div>
+          <div id="rubric-preview" class="card" style="padding:.7rem .75rem;margin-top:.3rem;">
+            <div class="section-sub" style="font-style:italic;">No rubric yet. Start in Guided or Manual mode.</div>
+          </div>
+          <div style="margin-top:.7rem;">
+            <div class="section-sub" style="margin-bottom:.3rem;font-weight:500;">Saved rubrics</div>
+            <select id="saved-rubrics-select" style="width:100%;padding:.35rem .45rem;border-radius:.6rem;border:1px solid rgba(0,0,0,.1);">
+              <option value="">(none yet)</option>
+            </select>
+            <div class="form-actions" style="margin-top:.4rem;">
+              <button id="load-rubric-btn" type="button" class="small-btn neutral">Load into builder</button>
+              <button id="delete-rubric-btn" type="button" class="small-btn danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Students & Classes Tab -->
+    <section class="card tab-panel" id="tab-students-classes">
+      <div class="section-title">Students &amp; Classes</div>
+      <div class="section-sub">Set up classes and students once, then reuse them across rubrics.</div>
+
+      <div class="two-col">
+        <!-- Classes -->
+        <div>
+          <div class="section-sub" style="margin-bottom:.4rem;font-weight:500;">Classes</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="class-name-input">Class name</label>
+              <input id="class-name-input" type="text" placeholder="Period 1 – Science">
+            </div>
+            <div class="form-field">
+              <label for="class-desc-input">Description</label>
+              <input id="class-desc-input" type="text" placeholder="Short description (optional)">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="add-class-btn" type="button">Add class</button>
+            <button id="update-class-btn" type="button" class="small-btn neutral">Update selected</button>
+            <button id="duplicate-class-btn" type="button" class="small-btn outline">Duplicate class</button>
+            <button id="delete-class-btn" type="button" class="small-btn danger">Delete class</button>
+          </div>
+
+          <div style="margin-top:.7rem;">
+            <label for="classes-select" style="font-size:.8rem;opacity:.8;">Existing classes</label>
+            <select id="classes-select" size="5" style="width:100%;margin-top:.25rem;border-radius:.6rem;border:1px solid rgba(0,0,0,.1);padding:.3rem .4rem;"></select>
+          </div>
+        </div>
+
+        <!-- Students -->
+        <div>
+          <div class="section-sub" style="margin-bottom:.4rem;font-weight:500;">Students in selected class</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="student-name-input">Student name</label>
+              <input id="student-name-input" type="text" placeholder="e.g., Alex Rivera">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="add-student-btn" type="button">Add student</button>
+          </div>
+
+          <div style="margin-top:.6rem;">
+            <table class="list-table">
+              <thead>
+                <tr><th>Student</th><th style="width:120px;">Actions</th></tr>
+              </thead>
+              <tbody id="students-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grade Tab -->
+    <section class="card tab-panel" id="tab-grade">
+      <div class="section-title">Grade</div>
+      <div class="section-sub">Pick a class and rubric, then work through each student.</div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="grade-class-select">Class</label>
+          <select id="grade-class-select"></select>
+        </div>
+        <div class="form-field">
+          <label for="grade-rubric-select">Rubric</label>
+          <select id="grade-rubric-select"></select>
+        </div>
+      </div>
+
+      <div id="grade-summary" class="section-sub" style="margin-top:.5rem;"></div>
+
+      <div id="grade-students-container" style="margin-top:.7rem;"></div>
+    </section>
+
+    <!-- Export Tab -->
+    <section class="card tab-panel" id="tab-export">
+      <div class="section-title">Export</div>
+      <div class="section-sub">Export grades and rubrics to CSV or to a printer-friendly view. Everything stays on this device.</div>
+
+      <div class="form-grid" style="margin-bottom:.6rem;">
+        <div class="form-field">
+          <label for="export-class-select">Class</label>
+          <select id="export-class-select"></select>
+        </div>
+        <div class="form-field">
+          <label for="export-rubric-select">Rubric</label>
+          <select id="export-rubric-select"></select>
+        </div>
+        <div class="form-field">
+          <label for="export-student-select">Single student (optional)</label>
+          <select id="export-student-select">
+            <option value="">(all students)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="export-options">
+        <button id="export-class-csv-btn" type="button">CSV – entire class</button>
+        <button id="export-student-csv-btn" type="button" class="neutral">CSV – one student</button>
+        <button id="export-rubric-only-print-btn" type="button" class="outline">Print – rubric only</button>
+        <button id="export-rubric-scores-print-btn" type="button" class="outline">Print – rubric + scores</button>
+      </div>
+    </section>
+
+    <!-- How to Use Tab -->
+    <section class="card tab-panel" id="tab-how-to">
+      <div class="section-title">How to Use Rubrics Magic</div>
+    <div class="card">
+  <!-- Quick Start -->
+  <div class="howto-section">
+    <h3>Quick Start</h3>
+    <p>1. Set your teacher profile so your name and info appear on exports.</p>
+    <p>2. Create a rubric using the Guided or Manual builder.</p>
+    <p>3. Add your classes and students.</p>
+    <p>4. Go to the Grade tab, choose a class and rubric, and click levels to score each student.</p>
+    <p>5. Use the Export tab to download a CSV or open a print-friendly view, then print or save as PDF.</p>
+  </div>
+
+  <!-- Rubric Types -->
+  <div class="howto-section">
+    <h3>Rubric Types</h3>
+    <p><strong>Analytic</strong> – multiple traits (for example: Organization, Evidence, Clarity), each scored across performance levels.</p>
+    <p><strong>Holistic</strong> – one overall score that represents the entire performance.</p>
+    <p><strong>Single-point</strong> – one main “meeting expectations” column with room to note strengths and next steps.</p>
+  </div>
+
+  <!-- Guided vs Manual Builder -->
+  <div class="howto-section">
+    <h3>Guided vs Manual Builder</h3>
+    <p><strong>Guided Builder</strong> asks a few questions and creates a draft rubric you can edit. It is best when you want to get started quickly and then fine-tune descriptors.</p>
+    <p><strong>Manual Builder</strong> gives full control over traits, levels, weights, and descriptors. It is best when you already know the exact structure you want.</p>
+    <p>Both builders feed into the same rubric preview, and all saved rubrics are available for grading and export.</p>
+  </div>
+
+  <!-- Students & Classes -->
+  <div class="howto-section">
+    <h3>Students &amp; Classes</h3>
+    <p>Use the Students &amp; Classes tab to keep your rosters organized.</p>
+    <ul>
+      <li>Create a class for each section or period.</li>
+      <li>Add, edit, and remove students within each class.</li>
+      <li>Duplicate classes when you want to reuse class details (students are not copied).</li>
+    </ul>
+    <p>Once classes and students are set up, they are available in the Grade and Export tabs.</p>
+  </div>
+
+  <!-- Grading -->
+  <div class="howto-section">
+    <h3>Grading</h3>
+    <p>In the Grade tab:</p>
+    <ul>
+      <li>Select a class.</li>
+      <li>Select a rubric.</li>
+      <li>For each student, choose a performance level for each trait (analytic and single-point), or one overall level (holistic).</li>
+      <li>Optionally add a comment for each student.</li>
+    </ul>
+    <p>The app calculates a weighted total score based on trait weights and level point values. All grading is saved automatically on this device.</p>
+  </div>
+
+  <!-- Exporting -->
+  <div class="howto-section">
+    <h3>Exporting</h3>
+    <p>Use the Export tab to pull data out of the app.</p>
+    <ul>
+      <li>Choose a class and rubric.</li>
+      <li>Optionally select a single student to export just that student.</li>
+      <li>Download a CSV for spreadsheets, gradebooks, or record keeping.</li>
+      <li>Open print-friendly views of the rubric or rubric with scores.</li>
+    </ul>
+    <p>From the print view, you can use your browser’s print dialog to save as PDF or print on paper.</p>
+  </div>
+
+  <!-- Offline & Data Safety -->
+  <div class="howto-section">
+    <h3>Offline &amp; Data Safety</h3>
+    <ul>
+      <li>The app works fully offline and does not require an internet connection.</li>
+      <li>All data is stored in <code>localStorage</code> on this device under one key: <code>rubricsMagicV3</code>.</li>
+      <li>No login, no syncing, and no cloud storage are involved.</li>
+      <li>Clearing browser storage will remove all rubrics, classes, students, and scores.</li>
+    </ul>
+  </div>
+
+  <!-- FAQ -->
+  <div class="howto-section">
+    <h3>FAQ</h3>
+    <p><em>Questions teachers may have while using Rubrics Magic.</em></p>
+
+    <p><strong>Do I need the internet to use this app?</strong><br>
+    No. The app works fully offline.</p>
+
+    <p><strong>Where is my data stored?</strong><br>
+    All information is saved locally on your device using browser storage.</p>
+
+    <p><strong>Will my data sync across devices?</strong><br>
+    No. Each device keeps its own data.</p>
+
+    <p><strong>Can I print or save rubrics and grades?</strong><br>
+    Yes. Use the Export tab to open a print-friendly view, then print or save as PDF.</p>
+
+    <p><strong>Can I edit a rubric after saving it?</strong><br>
+    Yes. Load it back into the builder to make changes.</p>
+
+    <p><strong>Can I duplicate a class?</strong><br>
+    Yes. The Duplicate button creates a new class with the same class details (students are not copied).</p>
+
+    <p><strong>What happens if I delete a class or rubric?</strong><br>
+    It is removed permanently. This cannot be undone.</p>
+
+    <p><strong>Can this be used on a phone?</strong><br>
+    It may work, but the layout is designed for desktops and laptops.</p>
+
+    <p><strong>Can students access this?</strong><br>
+    No. Rubrics Magic is for teachers only and stores everything locally on your device.</p>
+
+    <p><strong>What happens if I clear my browser data?</strong><br>
+    Local storage will be erased, and all app data will be lost. Save printed or PDF copies if needed.</p>
+  </div>
+
+  <!-- About -->
+  <div class="howto-section">
+    <h3>About</h3>
+    <p>Created by MachinoLabs</p>
+    <p>Designed by Joe Machino</p>
+    <p>Rubrics Magic runs fully offline and stores everything safely on your device. No accounts, no syncing, and no internet required.</p>
+  </div>
+</div>
+
+    </section>
+  </main>
+
+  <div class="footer">
+    Created by MachinoLabs • Designed by Joe Machino
+  </div>
+
+  <script>
+(function(){const STORAGE_KEY="rubricsMagicV3";let appState=null;let builder={id:null,name:"",type:"analytic",traits:[],levels:[],descriptors:{}};let idCounter=1;function nextId(prefix){idCounter++;return(prefix||"id_")+idCounter;}function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){appState=JSON.parse(raw);}else{appState={theme:"light",activeTab:"create",teacherProfile:{name:"",school:"",grades:"",subjects:"",room:""},classes:[],rubrics:[],grading:{}};}}catch(e){appState={theme:"light",activeTab:"create",teacherProfile:{name:"",school:"",grades:"",subjects:"",room:""},classes:[],rubrics:[],grading:{}};}if(!appState.theme)appState.theme="light";if(!appState.activeTab)appState.activeTab="create";if(!appState.teacherProfile)appState.teacherProfile={name:"",school:"",grades:"",subjects:"",room:""};if(!Array.isArray(appState.classes))appState.classes=[];if(!Array.isArray(appState.rubrics))appState.rubrics=[];if(!appState.grading)appState.grading={};}function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(appState));}catch(e){}}function applyTheme(){document.body.classList.toggle("theme-dark",appState.theme==="dark");const label=document.getElementById("theme-label");if(label)label.textContent=appState.theme==="dark"?"Dark":"Light";}function initThemeToggle(){const btn=document.getElementById("theme-btn");if(!btn)return;btn.addEventListener("click",function(){appState.theme=appState.theme==="light"?"dark":"light";applyTheme();saveState();});}function switchTab(tabId){appState.activeTab=tabId;const btns=document.querySelectorAll(".tab-btn");btns.forEach(b=>{b.classList.toggle("active",b.dataset.tab===tabId);});const panels={create:"tab-create","students-classes":"tab-students-classes",grade:"tab-grade",export:"tab-export","how-to":"tab-how-to"};Object.keys(panels).forEach(key=>{const el=document.getElementById(panels[key]);if(el)el.classList.toggle("active",key===tabId);});saveState();if(tabId==="grade")refreshGradeDropdowns();if(tabId==="export")refreshExportDropdowns();}function initTabs(){const btns=document.querySelectorAll(".tab-btn");btns.forEach(btn=>{btn.addEventListener("click",()=>{switchTab(btn.dataset.tab);});});switchTab(appState.activeTab||"create");}function updateTeacherStrip(){const p=appState.teacherProfile||{};const name=p.name||"Not set";const school=p.school||"Not set";const grades=p.grades||"Not set";const subjects=p.subjects||"Not set";const room=p.room||"Not set";const nameEl=document.getElementById("teacher-name-display");const schoolEl=document.getElementById("teacher-school-chip");const gradesEl=document.getElementById("teacher-grades-chip");const subjEl=document.getElementById("teacher-subjects-chip");const roomEl=document.getElementById("teacher-room-chip");if(nameEl)nameEl.textContent=name;if(schoolEl)schoolEl.textContent=school;if(gradesEl)gradesEl.textContent=grades;if(subjEl)subjEl.textContent=subjects;if(roomEl)roomEl.textContent=room;}function openTeacherEditor(){const existing=document.getElementById("teacher-edit-modal");if(existing){existing.remove();}const p=appState.teacherProfile||{};const modal=document.createElement("div");modal.style.position="fixed";modal.style.inset="0";modal.style.background="rgba(0,0,0,.4)";modal.style.display="flex";modal.style.alignItems="center";modal.style.justifyContent="center";modal.style.zIndex="50";modal.id="teacher-edit-modal";modal.innerHTML='<div class="card" style="max-width:460px;width:100%;max-height:90vh;overflow:auto;"><div class="section-title">Edit Teacher Profile</div><div class="section-sub" style="margin-bottom:.6rem;">Used on the Create tab and in exports.</div><div class="form-grid"><div class="form-field"><label>Name</label><input id="tp-name" type="text" placeholder="Required"></div><div class="form-field"><label>School</label><input id="tp-school" type="text"></div><div class="form-field"><label>Grade level(s)</label><input id="tp-grades" type="text"></div><div class="form-field"><label>Subject(s)</label><input id="tp-subjects" type="text"></div><div class="form-field"><label>Room</label><input id="tp-room" type="text"></div></div><div class="form-actions" style="margin-top:.8rem;justify-content:flex-end;"><button type="button" id="tp-cancel" class="small-btn neutral">Cancel</button><button type="button" id="tp-save" style="margin-left:.4rem;">Save</button></div></div>';document.body.appendChild(modal);document.getElementById("tp-name").value=p.name||"";document.getElementById("tp-school").value=p.school||"";document.getElementById("tp-grades").value=p.grades||"";document.getElementById("tp-subjects").value=p.subjects||"";document.getElementById("tp-room").value=p.room||"";modal.querySelector("#tp-cancel").addEventListener("click",()=>modal.remove());modal.querySelector("#tp-save").addEventListener("click",()=>{const name=document.getElementById("tp-name").value.trim();if(!name){alert("Please enter a name.");return;}appState.teacherProfile={name:name,school:document.getElementById("tp-school").value.trim(),grades:document.getElementById("tp-grades").value.trim(),subjects:document.getElementById("tp-subjects").value.trim(),room:document.getElementById("tp-room").value.trim()};saveState();updateTeacherStrip();modal.remove();});}function initTeacherProfile(){const btn=document.getElementById("edit-teacher-btn");if(btn)btn.addEventListener("click",openTeacherEditor);updateTeacherStrip();}function syncBuilderToUI(){document.getElementById("manual-name").value=builder.name||"";document.getElementById("manual-type").value=builder.type||"analytic";renderTraitsTable();renderLevelsTable();renderDescriptorsGrid();renderRubricPreview();}function ensureBuilderHasIds(){builder.traits.forEach(t=>{if(!t.id)t.id=nextId("trait_");});builder.levels.forEach(l=>{if(!l.id)l.id=nextId("level_");});if(!builder.descriptors)builder.descriptors={};}function renderTraitsTable(){const tbody=document.querySelector("#traits-table tbody");tbody.innerHTML="";builder.traits.forEach((t,idx)=>{const tr=document.createElement("tr");tr.innerHTML='<td><input data-trait-id="'+t.id+'" data-field="label" type="text" value="'+(t.label||"")+'" style="width:100%;padding:.3rem .4rem;border-radius:.5rem;border:1px solid rgba(0,0,0,.1);"></td><td><input data-trait-id="'+t.id+'" data-field="weight" type="number" min="0" step="0.1" value="'+(typeof t.weight==="number"?t.weight:1)+'" style="width:100%;padding:.3rem .4rem;border-radius:.5rem;border:1px solid rgba(0,0,0,.1);"></td><td><button type="button" class="small-btn neutral" data-action="up" data-idx="'+idx+'">↑</button> <button type="button" class="small-btn neutral" data-action="down" data-idx="'+idx+'">↓</button> <button type="button" class="small-btn danger" data-action="del" data-idx="'+idx+'">✕</button></td>';tbody.appendChild(tr);});tbody.querySelectorAll("input").forEach(inp=>{inp.addEventListener("input",()=>{const id=inp.getAttribute("data-trait-id");const field=inp.getAttribute("data-field");const trait=builder.traits.find(x=>x.id===id);if(!trait)return;if(field==="label"){trait.label=inp.value;}else if(field==="weight"){const v=parseFloat(inp.value);trait.weight=isNaN(v)?1:v;}renderRubricPreview();});});tbody.querySelectorAll("button").forEach(btn=>{btn.addEventListener("click",()=>{const idx=parseInt(btn.getAttribute("data-idx"),10);const action=btn.getAttribute("data-action");if(action==="del"){builder.traits.splice(idx,1);}else if(action==="up"&&idx>0){const tmp=builder.traits[idx-1];builder.traits[idx-1]=builder.traits[idx];builder.traits[idx]=tmp;}else if(action==="down"&&idx<builder.traits.length-1){const tmp=builder.traits[idx+1];builder.traits[idx+1]=builder.traits[idx];builder.traits[idx]=tmp;}renderTraitsTable();renderDescriptorsGrid();renderRubricPreview();});});}function renderLevelsTable(){const tbody=document.querySelector("#levels-table tbody");tbody.innerHTML="";builder.levels.forEach((l,idx)=>{const tr=document.createElement("tr");tr.innerHTML='<td><input data-level-id="'+l.id+'" data-field="label" type="text" value="'+(l.label||"")+'" style="width:100%;padding:.3rem .4rem;border-radius:.5rem;border:1px solid rgba(0,0,0,.1);"></td><td><input data-level-id="'+l.id+'" data-field="points" type="number" min="0" step="1" value="'+(typeof l.points==="number"?l.points:0)+'" style="width:100%;padding:.3rem .4rem;border-radius:.5rem;border:1px solid rgba(0,0,0,.1);"></td><td><button type="button" class="small-btn neutral" data-action="up" data-idx="'+idx+'">↑</button> <button type="button" class="small-btn neutral" data-action="down" data-idx="'+idx+'">↓</button> <button type="button" class="small-btn danger" data-action="del" data-idx="'+idx+'">✕</button></td>';tbody.appendChild(tr);});tbody.querySelectorAll("input").forEach(inp=>{inp.addEventListener("input",()=>{const id=inp.getAttribute("data-level-id");const field=inp.getAttribute("data-field");const level=builder.levels.find(x=>x.id===id);if(!level)return;if(field==="label"){level.label=inp.value;}else if(field==="points"){const v=parseFloat(inp.value);level.points=isNaN(v)?0:v;}renderRubricPreview();});});tbody.querySelectorAll("button").forEach(btn=>{btn.addEventListener("click",()=>{const idx=parseInt(btn.getAttribute("data-idx"),10);const action=btn.getAttribute("data-action");if(action==="del"){builder.levels.splice(idx,1);}else if(action==="up"&&idx>0){const tmp=builder.levels[idx-1];builder.levels[idx-1]=builder.levels[idx];builder.levels[idx]=tmp;}else if(action==="down"&&idx<builder.levels.length-1){const tmp=builder.levels[idx+1];builder.levels[idx+1]=builder.levels[idx];builder.levels[idx]=tmp;}renderLevelsTable();renderDescriptorsGrid();renderRubricPreview();});});}function renderDescriptorsGrid(){const container=document.getElementById("descriptors-container");if(!builder.traits.length||!builder.levels.length){container.textContent="Add traits and levels to edit descriptors.";return;}let html='<table class="list-table"><thead><tr><th>Trait \\ Level</th>';builder.levels.forEach(l=>{html+='<th>'+escapeHtml(l.label||"")+'</th>';});html+='</tr></thead><tbody>';builder.traits.forEach(t=>{html+='<tr><td style="font-weight:500;font-size:.8rem;">'+escapeHtml(t.label||"Trait")+'</td>';builder.levels.forEach(l=>{if(!builder.descriptors[t.id])builder.descriptors[t.id]={};const val=builder.descriptors[t.id][l.id]||"";html+='<td><textarea data-dtrait="'+t.id+'" data-dlevel="'+l.id+'" style="width:100%;min-height:2.2rem;font-size:.75rem;border-radius:.5rem;border:1px solid rgba(0,0,0,.12);padding:.25rem .3rem;resize:vertical;">'+escapeHtml(val)+'</textarea></td>';});html+='</tr>';});html+='</tbody></table>';container.innerHTML=html;container.querySelectorAll("textarea").forEach(ta=>{ta.addEventListener("input",()=>{const tid=ta.getAttribute("data-dtrait");const lid=ta.getAttribute("data-dlevel");if(!builder.descriptors[tid])builder.descriptors[tid]={};builder.descriptors[tid][lid]=ta.value;renderRubricPreview();});});}function escapeHtml(str){return String(str).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}function renderRubricPreview(){const box=document.getElementById("rubric-preview");if(!builder||!builder.levels.length||!builder.traits.length){box.innerHTML='<div class="section-sub" style="font-style:italic;">No rubric yet. Start in Guided or Manual mode.</div>';return;}let html='<div class="section-sub" style="font-weight:600;margin-bottom:.3rem;">'+escapeHtml(builder.name||"(Unnamed rubric)")+'</div>';html+='<div class="section-sub" style="margin-bottom:.3rem;">Type: '+escapeHtml(builder.type||"analytic")+'</div>';html+='<table class="list-table"><thead><tr><th>Trait</th>';builder.levels.forEach(l=>{html+='<th>'+escapeHtml(l.label||"")+'<div style="font-size:.7rem;opacity:.7;">'+(typeof l.points==="number"?l.points:0)+' pts</div></th>';});html+='</tr></thead><tbody>';builder.traits.forEach(t=>{html+='<tr><td><strong>'+escapeHtml(t.label||"Trait")+'</strong><div style="font-size:.7rem;opacity:.7;">Weight: '+(typeof t.weight==="number"?t.weight:1)+'</div></td>';builder.levels.forEach(l=>{const desc=(builder.descriptors&&builder.descriptors[t.id]&&builder.descriptors[t.id][l.id])||"";html+='<td style="font-size:.75rem;">'+(desc?escapeHtml(desc):'<span style="opacity:.5;">(no descriptor)</span>')+'</td>';});html+='</tr>';});html+='</tbody></table>';box.innerHTML=html;}function initBuilderModeToggle(){const btns=document.querySelectorAll(".builder-mode-btn");btns.forEach(btn=>{btn.addEventListener("click",()=>{btns.forEach(b=>b.classList.remove("active"));btn.classList.add("active");const mode=btn.getAttribute("data-mode");document.getElementById("guided-builder").style.display=mode==="guided"?"block":"none";document.getElementById("manual-builder").style.display=mode==="manual"?"block":"none";});});}function initGuidedBuilder(){const generateBtn=document.getElementById("guided-generate");generateBtn.addEventListener("click",()=>{const name=document.getElementById("guided-name").value.trim()||"New Rubric";const levelsCount=parseInt(document.getElementById("guided-levels").value,10)||4;const traitsRaw=document.getElementById("guided-traits").value.trim();let traitsList=[];if(traitsRaw){traitsList=traitsRaw.split(",").map(s=>s.trim()).filter(Boolean);}if(!traitsList.length){traitsList=["Organization","Evidence","Clarity"];}builder={id:null,name:name,type:"analytic",traits:[],levels:[],descriptors:{}};traitsList.forEach(label=>{builder.traits.push({id:nextId("trait_"),label:label,weight:1});});const defaultLevelLabels={3:["Beginning","Developing","Proficient"],4:["Beginning","Developing","Proficient","Advanced"],5:["Beginning","Developing","Proficient","Advanced","Exemplary"]};const labels=defaultLevelLabels[levelsCount]||defaultLevelLabels[4];for(let i=0;i<levelsCount;i++){builder.levels.push({id:nextId("level_"),label:labels[i]||("Level "+(i+1)),points:levelsCount-i});}builder.descriptors={};builder.traits.forEach(t=>{builder.descriptors[t.id]={};builder.levels.forEach(l=>{builder.descriptors[t.id][l.id]="Generic descriptor for "+t.label+" at "+l.label+".";});});syncBuilderToUI();});}function initManualBuilder(){document.getElementById("manual-name").addEventListener("input",e=>{builder.name=e.target.value;renderRubricPreview();});document.getElementById("manual-type").addEventListener("change",e=>{builder.type=e.target.value;renderRubricPreview();});document.getElementById("add-trait-btn").addEventListener("click",()=>{builder.traits.push({id:nextId("trait_"),label:"New Trait",weight:1});renderTraitsTable();renderDescriptorsGrid();renderRubricPreview();});document.getElementById("add-level-btn").addEventListener("click",()=>{builder.levels.push({id:nextId("level_"),label:"Level "+(builder.levels.length+1),points:builder.levels.length+1});renderLevelsTable();renderDescriptorsGrid();renderRubricPreview();});document.getElementById("save-rubric-btn").addEventListener("click",()=>{ensureBuilderHasIds();if(!builder.name||!builder.traits.length||!builder.levels.length){alert("Please provide a name, at least one trait, and at least one level before saving.");return;}const rub={id:builder.id||nextId("rubric_"),name:builder.name,type:builder.type,traits:JSON.parse(JSON.stringify(builder.traits)),levels:JSON.parse(JSON.stringify(builder.levels)),descriptors:JSON.parse(JSON.stringify(builder.descriptors||{}))};const existingIndex=appState.rubrics.findIndex(r=>r.id===rub.id);if(existingIndex>=0){appState.rubrics[existingIndex]=rub;}else{appState.rubrics.push(rub);}builder.id=rub.id;saveState();refreshRubricsSelect();alert("Rubric saved.");});document.getElementById("load-rubric-btn").addEventListener("click",()=>{const sel=document.getElementById("saved-rubrics-select");const id=sel.value;if(!id){alert("Choose a saved rubric first.");return;}const rub=appState.rubrics.find(r=>r.id===id);if(!rub){alert("Rubric not found.");return;}builder={id:rub.id,name:rub.name,type:rub.type,traits:JSON.parse(JSON.stringify(rub.traits||[])),levels:JSON.parse(JSON.stringify(rub.levels||[])),descriptors:JSON.parse(JSON.stringify(rub.descriptors||{}))};syncBuilderToUI();alert("Loaded into builder.");});document.getElementById("delete-rubric-btn").addEventListener("click",()=>{const sel=document.getElementById("saved-rubrics-select");const id=sel.value;if(!id){alert("Choose a rubric to delete.");return;}if(!confirm("Delete this rubric? This cannot be undone."))return;appState.rubrics=appState.rubrics.filter(r=>r.id!==id);if(builder.id===id){builder={id:null,name:"",type:"analytic",traits:[],levels:[],descriptors:{}};syncBuilderToUI();}saveState();refreshRubricsSelect();});}function refreshRubricsSelect(){const select=document.getElementById("saved-rubrics-select");select.innerHTML="";if(!appState.rubrics.length){select.innerHTML='<option value="">(none yet)</option>';return;}appState.rubrics.forEach(r=>{const opt=document.createElement("option");opt.value=r.id;opt.textContent=r.name||"(Untitled)";select.appendChild(opt);});const gradeSel=document.getElementById("grade-rubric-select");const exportSel=document.getElementById("export-rubric-select");[gradeSel,exportSel].forEach(sel=>{if(!sel)return;sel.innerHTML="";appState.rubrics.forEach(r=>{const opt=document.createElement("option");opt.value=r.id;opt.textContent=r.name||"(Untitled)";sel.appendChild(opt);});});}function classDisplayName(c){return c.name||(c.id||"");}function refreshClassesUI(){const list=document.getElementById("classes-select");list.innerHTML="";appState.classes.forEach(c=>{const opt=document.createElement("option");opt.value=c.id;opt.textContent=classDisplayName(c);list.appendChild(opt);});refreshGradeDropdowns();refreshExportDropdowns();renderStudentsTable();}function getSelectedClassId(){const sel=document.getElementById("classes-select");return sel&&sel.value?sel.value:null;}function getClassById(id){return appState.classes.find(c=>c.id===id)||null;}function renderStudentsTable(){const tbody=document.getElementById("students-table-body");tbody.innerHTML="";const cid=getSelectedClassId();if(!cid){tbody.innerHTML='<tr><td colspan="2" style="font-size:.8rem;opacity:.7;">Select a class to manage students.</td></tr>';return;}const c=getClassById(cid);if(!c){tbody.innerHTML='<tr><td colspan="2" style="font-size:.8rem;opacity:.7;">Class not found.</td></tr>';return;}if(!Array.isArray(c.students))c.students=[];if(!c.students.length){tbody.innerHTML='<tr><td colspan="2" style="font-size:.8rem;opacity:.7;">No students yet. Add the first one.</td></tr>';return;}c.students.forEach(stu=>{const tr=document.createElement("tr");tr.innerHTML='<td>'+escapeHtml(stu.name||"(Unnamed)")+'</td><td><button type="button" class="small-btn neutral" data-action="edit" data-id="'+stu.id+'">Rename</button> <button type="button" class="small-btn danger" data-action="del" data-id="'+stu.id+'">Remove</button></td>';tbody.appendChild(tr);});tbody.querySelectorAll("button").forEach(btn=>{btn.addEventListener("click",()=>{const cid=getSelectedClassId();if(!cid)return;const c=getClassById(cid);if(!c)return;const sid=btn.getAttribute("data-id");const action=btn.getAttribute("data-action");if(action==="del"){if(!confirm("Remove this student from the class?"))return;c.students=c.students.filter(s=>s.id!==sid);saveState();renderStudentsTable();}else if(action==="edit"){const stu=c.students.find(s=>s.id===sid);if(!stu)return;const newName=prompt("New name:",stu.name||"");if(newName&&newName.trim()){stu.name=newName.trim();saveState();renderStudentsTable();}}});});}function initClassesAndStudents(){document.getElementById("add-class-btn").addEventListener("click",()=>{const name=document.getElementById("class-name-input").value.trim();const desc=document.getElementById("class-desc-input").value.trim();if(!name){alert("Please enter a class name.");return;}const id=nextId("class_");appState.classes.push({id:id,name:name,description:desc,students:[]});saveState();document.getElementById("class-name-input").value="";document.getElementById("class-desc-input").value="";refreshClassesUI();});document.getElementById("update-class-btn").addEventListener("click",()=>{const cid=getSelectedClassId();if(!cid){alert("Select a class to update.");return;}const c=getClassById(cid);if(!c)return;const name=document.getElementById("class-name-input").value.trim();const desc=document.getElementById("class-desc-input").value.trim();if(!name){alert("Please enter a class name.");return;}c.name=name;c.description=desc;saveState();refreshClassesUI();});document.getElementById("duplicate-class-btn").addEventListener("click",()=>{const cid=getSelectedClassId();if(!cid){alert("Select a class to duplicate.");return;}const c=getClassById(cid);if(!c)return;const id=nextId("class_");const copyName=c.name?c.name+" (Copy)":id;appState.classes.push({id:id,name:copyName,description:c.description||"",students:[]});saveState();refreshClassesUI();});document.getElementById("delete-class-btn").addEventListener("click",()=>{const cid=getSelectedClassId();if(!cid){alert("Select a class to delete.");return;}const c=getClassById(cid);if(!c)return;if(!confirm("Delete this class and its students? This cannot be undone."))return;appState.classes=appState.classes.filter(x=>x.id!==cid);if(appState.grading&&appState.grading[cid]){delete appState.grading[cid];}saveState();refreshClassesUI();});document.getElementById("classes-select").addEventListener("change",()=>{const cid=getSelectedClassId();const c=getClassById(cid||"");if(c){document.getElementById("class-name-input").value=c.name||"";document.getElementById("class-desc-input").value=c.description||"";}else{document.getElementById("class-name-input").value="";document.getElementById("class-desc-input").value="";}renderStudentsTable();});document.getElementById("add-student-btn").addEventListener("click",()=>{const cid=getSelectedClassId();if(!cid){alert("Select a class first.");return;}const c=getClassById(cid);if(!c)return;let name=document.getElementById("student-name-input").value.trim();if(!name){name=prompt("Student name:","");if(!name||!name.trim())return;name=name.trim();}if(!Array.isArray(c.students))c.students=[];c.students.push({id:nextId("stu_"),name:name});document.getElementById("student-name-input").value="";saveState();renderStudentsTable();});refreshClassesUI();}function refreshGradeDropdowns(){const classSel=document.getElementById("grade-class-select");classSel.innerHTML="";if(!appState.classes.length){const opt=document.createElement("option");opt.value="";opt.textContent="(no classes yet)";classSel.appendChild(opt);}else{appState.classes.forEach(c=>{const opt=document.createElement("option");opt.value=c.id;opt.textContent=classDisplayName(c);classSel.appendChild(opt);});}const rubricSel=document.getElementById("grade-rubric-select");rubricSel.innerHTML="";if(!appState.rubrics.length){const opt=document.createElement("option");opt.value="";opt.textContent="(no rubrics yet)";rubricSel.appendChild(opt);}else{appState.rubrics.forEach(r=>{const opt=document.createElement("option");opt.value=r.id;opt.textContent=r.name||"(Untitled)";rubricSel.appendChild(opt);});}renderGradePanel();}function getRubricById(id){return appState.rubrics.find(r=>r.id===id)||null;}function ensureGradingPaths(classId,rubricId,studentId){if(!appState.grading)appState.grading={};if(!appState.grading[classId])appState.grading[classId]={};if(!appState.grading[classId][rubricId])appState.grading[classId][rubricId]={};if(studentId){if(!appState.grading[classId][rubricId][studentId])appState.grading[classId][rubricId][studentId]={scores:{},comment:""};}}function computeTotalPoints(rubric,scores){if(!rubric||!scores)return 0;let total=0;rubric.traits.forEach(t=>{const levelId=scores[t.id];if(!levelId)return;const lvl=rubric.levels.find(l=>l.id===levelId);if(!lvl)return;const w=(typeof t.weight==="number"?t.weight:1);const pts=(typeof lvl.points==="number"?lvl.points:0);total+=w*pts;});return total;}function renderGradePanel(){const summary=document.getElementById("grade-summary");const container=document.getElementById("grade-students-container");const classSel=document.getElementById("grade-class-select");const rubricSel=document.getElementById("grade-rubric-select");const classId=classSel.value;const rubricId=rubricSel.value;container.innerHTML="";if(!classId||!rubricId){summary.textContent="Choose a class and rubric to begin grading.";return;}const c=getClassById(classId);const rubric=getRubricById(rubricId);if(!c||!rubric){summary.textContent="Class or rubric not found.";return;}if(!Array.isArray(c.students)||!c.students.length){summary.textContent="This class has no students yet.";return;}summary.textContent="Grading "+c.name+" with "+(rubric.name||"untitled rubric")+".";c.students.forEach(stu=>{ensureGradingPaths(classId,rubricId,stu.id);const record=appState.grading[classId][rubricId][stu.id];const scores=record.scores||{};const total=computeTotalPoints(rubric,scores);const div=document.createElement("div");div.className="grade-student-card";let inner='<div class="grade-header"><div>'+escapeHtml(stu.name||"(Unnamed)")+'</div><div style="font-size:.8rem;opacity:.8;">Total: <span data-total="'+stu.id+'">'+total.toFixed(1)+'</span></div></div>';rubric.traits.forEach(t=>{inner+='<div class="trait-row"><div class="trait-label">'+escapeHtml(t.label||"Trait")+'</div>';rubric.levels.forEach(l=>{const selected=scores[t.id]===l.id;inner+='<button type="button" class="level-btn'+(selected?" selected":"")+'" data-student="'+stu.id+'" data-trait="'+t.id+'" data-level="'+l.id+'">'+escapeHtml(l.label||"")+'</button>';});inner+='</div>';});inner+='<textarea class="comment-box" placeholder="Comment (optional)" data-comment="'+stu.id+'">'+escapeHtml(record.comment||"")+'</textarea>';div.innerHTML=inner;container.appendChild(div);});container.querySelectorAll(".level-btn").forEach(btn=>{btn.addEventListener("click",()=>{const sid=btn.getAttribute("data-student");const tid=btn.getAttribute("data-trait");const lid=btn.getAttribute("data-level");ensureGradingPaths(classId,rubricId,sid);const rec=appState.grading[classId][rubricId][sid];if(!rec.scores)rec.scores={};rec.scores[tid]=lid;const siblings=btn.parentElement.querySelectorAll(".level-btn[data-student='"+sid+"'][data-trait='"+tid+"']");siblings.forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");const totalSpan=container.querySelector("span[data-total='"+sid+"']");if(totalSpan)totalSpan.textContent=computeTotalPoints(rubric,rec.scores).toFixed(1);saveState();});});container.querySelectorAll("textarea.comment-box").forEach(ta=>{ta.addEventListener("input",()=>{const sid=ta.getAttribute("data-comment");ensureGradingPaths(classId,rubricId,sid);appState.grading[classId][rubricId][sid].comment=ta.value;saveState();});});}function initGradeTab(){document.getElementById("grade-class-select").addEventListener("change",renderGradePanel);document.getElementById("grade-rubric-select").addEventListener("change",renderGradePanel);}function refreshExportDropdowns(){const classSel=document.getElementById("export-class-select");classSel.innerHTML="";if(!appState.classes.length){const opt=document.createElement("option");opt.value="";opt.textContent="(no classes yet)";classSel.appendChild(opt);}else{appState.classes.forEach(c=>{const opt=document.createElement("option");opt.value=c.id;opt.textContent=classDisplayName(c);classSel.appendChild(opt);});}const rubricSel=document.getElementById("export-rubric-select");rubricSel.innerHTML="";if(!appState.rubrics.length){const opt=document.createElement("option");opt.value="";opt.textContent="(no rubrics yet)";rubricSel.appendChild(opt);}else{appState.rubrics.forEach(r=>{const opt=document.createElement("option");opt.value=r.id;opt.textContent=r.name||"(Untitled)";rubricSel.appendChild(opt);});}refreshExportStudents();}function refreshExportStudents(){const classId=document.getElementById("export-class-select").value;const sel=document.getElementById("export-student-select");sel.innerHTML="";const optAll=document.createElement("option");optAll.value="";optAll.textContent="(all students)";sel.appendChild(optAll);const c=getClassById(classId||"");if(!c||!Array.isArray(c.students))return;c.students.forEach(stu=>{const opt=document.createElement("option");opt.value=stu.id;opt.textContent=stu.name||"(Unnamed)";sel.appendChild(opt);});}function initExportTab(){document.getElementById("export-class-select").addEventListener("change",()=>{refreshExportStudents();});document.getElementById("export-class-csv-btn").addEventListener("click",()=>{const classId=document.getElementById("export-class-select").value;const rubricId=document.getElementById("export-rubric-select").value;if(!classId||!rubricId){alert("Choose class and rubric first.");return;}const csv=buildCsv(classId,rubricId,null);if(!csv){alert("No data to export.");return;}downloadText(csv,"rubrics_magic_class.csv","text/csv");});document.getElementById("export-student-csv-btn").addEventListener("click",()=>{const classId=document.getElementById("export-class-select").value;const rubricId=document.getElementById("export-rubric-select").value;const stuId=document.getElementById("export-student-select").value;if(!classId||!rubricId||!stuId){alert("Choose class, rubric, and a single student.");return;}const csv=buildCsv(classId,rubricId,stuId);if(!csv){alert("No data to export.");return;}downloadText(csv,"rubrics_magic_student.csv","text/csv");});document.getElementById("export-rubric-only-print-btn").addEventListener("click",()=>{const rubricId=document.getElementById("export-rubric-select").value;if(!rubricId){alert("Choose a rubric.");return;}const rubric=getRubricById(rubricId);if(!rubric){alert("Rubric not found.");return;}openPrintWindow(rubric,null,null,false);});document.getElementById("export-rubric-scores-print-btn").addEventListener("click",()=>{const classId=document.getElementById("export-class-select").value;const rubricId=document.getElementById("export-rubric-select").value;if(!classId||!rubricId){alert("Choose class and rubric first.");return;}const c=getClassById(classId);const rubric=getRubricById(rubricId);if(!c||!rubric){alert("Class or rubric not found.");return;}openPrintWindow(rubric,c,classId,true);});}function buildCsv(classId,rubricId,onlyStudentId){const c=getClassById(classId);const rubric=getRubricById(rubricId);if(!c||!rubric)return"";if(!Array.isArray(c.students)||!c.students.length)return"";const prof=appState.teacherProfile||{};const rows=[];const header=["TeacherName","School","Class","StudentName","RubricName"];rubric.traits.forEach(t=>{rubric.levels.forEach(l=>{header.push(t.label+" ("+l.label+")");});});header.push("TotalPoints","Comment");rows.push(header.map(csvEscape).join(","));c.students.forEach(stu=>{if(onlyStudentId&&stu.id!==onlyStudentId)return;ensureGradingPaths(classId,rubricId,stu.id);const rec=appState.grading[classId][rubricId][stu.id]||{scores:{},comment:""};const scores=rec.scores||{};const total=computeTotalPoints(rubric,scores);const row=[prof.name||"",prof.school||"",c.name||"",stu.name||"",rubric.name||""];rubric.traits.forEach(t=>{rubric.levels.forEach(l=>{const selected=scores[t.id]===l.id;row.push(selected?String(l.points):"");});});row.push(total.toFixed(1),rec.comment||"");rows.push(row.map(csvEscape).join(","));});return rows.join("\r\n");}function csvEscape(v){const s=String(v==null?"":v);if(/[",\n\r]/.test(s)){return'"'+s.replace(/"/g,'""')+'"';}return s;}function downloadText(text,filename,mime){const blob=new Blob([text],{type:mime||"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},0);}function openPrintWindow(rubric,classObj,classId,includeScores){const win=window.open("","_blank");if(!win){alert("Popup blocked. Allow popups for printing.");return;}const prof=appState.teacherProfile||{};let html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rubrics Magic Print</title><style>body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:1rem;font-size:12px;}h1,h2,h3{margin:0 0 .4rem;}table{width:100%;border-collapse:collapse;margin-top:.5rem;}th,td{border:1px solid #999;padding:.25rem .3rem;font-size:11px;}th{background:#eee;} .meta{margin-bottom:.6rem;font-size:11px;} .meta div{margin-bottom:.1rem;}</style></head><body>';html+='<h1>Rubrics Magic</h1>';html+='<div class="meta">';html+='<div><strong>Teacher:</strong> '+escapeHtml(prof.name||"")+'</div>';if(prof.school)html+='<div><strong>School:</strong> '+escapeHtml(prof.school)+'</div>';if(classObj)html+='<div><strong>Class:</strong> '+escapeHtml(classObj.name||"")+'</div>';html+='<div><strong>Rubric:</strong> '+escapeHtml(rubric.name||"")+'</div>';html+='<div><strong>Date:</strong> '+escapeHtml(new Date().toLocaleDateString())+'</div>';html+='</div>';html+='<h3>Rubric Structure</h3>';html+='<table><thead><tr><th>Trait</th>';rubric.levels.forEach(l=>{html+='<th>'+escapeHtml(l.label||"")+' ('+(typeof l.points==="number"?l.points:0)+' pts)</th>';});html+='</tr></thead><tbody>';rubric.traits.forEach(t=>{html+='<tr><td><strong>'+escapeHtml(t.label||"Trait")+'</strong><br><span style="font-size:10px;">Weight: '+(typeof t.weight==="number"?t.weight:1)+'</span></td>';rubric.levels.forEach(l=>{const desc=(rubric.descriptors&&rubric.descriptors[t.id]&&rubric.descriptors[t.id][l.id])||"";html+='<td>'+(desc?escapeHtml(desc):"&nbsp;")+'</td>';});html+='</tr>';});html+='</tbody></table>';if(includeScores&&classObj){html+='<h3 style="margin-top:1rem;">Scores</h3>';if(!Array.isArray(classObj.students)||!classObj.students.length){html+='<p>No students in this class.</p>';}else{html+='<table><thead><tr><th>Student</th><th>Total</th><th>Comment</th></tr></thead><tbody>';classObj.students.forEach(stu=>{ensureGradingPaths(classId,rubric.id,stu.id);const rec=appState.grading[classId][rubric.id][stu.id]||{scores:{},comment:""};const total=computeTotalPoints(rubric,rec.scores||{});html+='<tr><td>'+escapeHtml(stu.name||"")+'</td><td>'+total.toFixed(1)+'</td><td>'+escapeHtml(rec.comment||"")+'</td></tr>';});html+='</tbody></table>';}}html+='<p style="margin-top:1rem;font-size:10px;">Created by MachinoLabs • Designed by Joe Machino</p>';html+='</body></html>';win.document.open();win.document.write(html);win.document.close();win.focus();win.print();}function init(){loadState();applyTheme();initThemeToggle();initTabs();initTeacherProfile();initBuilderModeToggle();initGuidedBuilder();initManualBuilder();refreshRubricsSelect();initClassesAndStudents();initGradeTab();initExportTab();document.getElementById("export-class-select").addEventListener("change",refreshExportStudents);syncBuilderToUI();}document.addEventListener("DOMContentLoaded",init);})();
+  </script>
+
+  <!-- PWA: service worker registration -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js").catch(function (err) {
+          console.error("Service worker registration failed:", err);
+        });
+      });
+    }
+  </script>
+  <!-- /PWA: service worker registration -->
+</body>
+</html>
